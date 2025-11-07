@@ -1,0 +1,6 @@
+this is my road map for creating an http server from scratch am gonna follow the steps from the course of the prime in bootdev but am gonna try to write in c 
+hint : llm won't really help as they are gonna spit out codes and burning steps 
+
+
+first : 
+  i should of the buffer as something where the data is gonna go

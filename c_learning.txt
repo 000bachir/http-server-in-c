@@ -1,0 +1,80 @@
+what i learned in c : 
+this snippet is used to read each character from a text file in c 
+/*
+int main(int argc, char *argv[]) {
+  int character_code;
+  char character;
+
+  FILE *fptr = fopen("message.txt", "r");
+
+  if (fptr == NULL) {
+    printf("error could not open the message.txt file\n");
+    return 1;
+  };
+  printf("reding file contect : ...\n");
+
+  while ((character_code = fgetc(fptr)) != EOF) {
+    character = (char)character_code;
+    printf("%c\n", character);
+  }
+  printf("\n");
+  fclose(fptr);
+  printf("job done\n");
+  return 0;
+}*/
+
+
+
+
+
+
+
+
+fscanf = can read from a text file word by word ( i need to pass the file , the format , and the max_length of the word defined as a macro )
+
+
+
+fopen = to open  a text file :
+  FILE *filepointer = fopen("name of the file " , mode )
+
+to read 8 bytes at the time i need to use fread() : 
+  function reads a specified number of items of a specified size from a file stream into a memory block
+
+
+
+this loop will read the hole file  : 
+with this loop am reading the entire file
+while (fgets(buffer, 255, fptr) != NULL) {
+  printf("%s\n", buffer);
+}
+
+
+some definition : 
+
+in c the size_t : "size type" represnt the size of an object in bytes is an unsigned integer type of at least 16 bit 
+
+in lemons terms this sentence mean : 
+fread(...) means read some data from a file.
+
+buffer → where we put the data we read.
+
+1 → each “thing” we read is 1 byte big.
+
+BLOCK_SIZE → how many of those 1-byte things we want to read (so total = BLOCK_SIZE bytes).
+
+fptr → the file we’re reading from.
+
+> 0 → means “did we actually read something?” (if yes, continue).
+
+while ((bytes_read = fread(buffer, 1, BLOCK_SIZE, fptr)) > 0) {
+    for (size_t i = 0; i < bytes_read; i++) {
+    printf("%c", buffer[i]);
+  }
+}
+
+
+
+
+
+
+
