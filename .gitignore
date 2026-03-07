@@ -1,0 +1,9 @@
+
+./insight.txt
+./c_learning.txt
+./message.txt
+
+./src/file_reader
+
+ ./src/file_reader/file_reader.c
+ ./src/file_reader/file_reader.h

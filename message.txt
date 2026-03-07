@@ -1,5 +1,49 @@
-Do you have what it takes to be an engineer at TheStartup™?
-Are you willing to work 80 hours a week in hopes that your 0.001% equity is worth something?
-Can you say "synergy" and "democratize" with a straight face?
-Are you prepared to eat top ramen at your desk 3 meals a day?
-end
+to build an http server form scratch in c this what i know so far and what i have to keep in mind : 
+
+one : i need to create a function that will parse the first line of the http request line 
+DEFINITION : this function main priority is to parse the first http request line , the arguments that it must have are : 
+  -a pointer named buffer of type char that is constant
+  -a pointer named method of type char 
+  -a pointer named path of type char 
+  this function will the c builtin sscanf( it extract values form a string using a format ) NOTE : the number of pointer must not exceede same as the number of arguments 
+
+the function look like this : 
+int parse_request_line(const char *buffer , char *method , char *path) {
+    return sscanf(buffer , "%15s %255s" , method , path)
+  }
+  the  "%15s %255s" are for the method and path : %15s → puts "GET" into method (max 15 chars)
+                                                  %255s → puts "/users" into path (max 255 chars)
+
+
+two : i need to build and send a complete response : 
+
+The function is of type void and it takes these arguments , it's main purpose is to build and send a complete http response and it takes these arguments 
+  - an int client_fd 
+  - int status_code 
+  - pointer named status_text of type char that is constant 
+  - pointer named content_type of type char that is constant 
+  - pointer named body of type char that is constant 
+
+steps : 
+  create a variable header of type char and initate it to the BUFFER_SIZE defined earlier 
+  create a variable body_length that will of type int and it has to be : strlen(body) "  strlen calculate the length of a string "
+  NOTE : We calculate the length of the body because http 1.1 requires it to because : 
+  - http 1.1 requires it for a response with a body 
+  - the client needs to know how many bytes he has to read before the connection is established 
+  - without it the client may hag , read forever or misparse the next response
+  
+  use the snprintf function because : 
+    -it format the text into char buffer safely (prevent buffer overflow)
+  it takes the header , the size of the header , the format (  "<!DOCTYPE html><html><body><h1>404 Not Found</h1></body></html>") , an empty line \r\n (this one is a must between the header and the body ) , the status code(200 , 400 ...etc) , content_type("text/plain" , "text/html" ... etc  , status_text("OK" , "unauthorized" ...etc) , body_length )
+  then we send like this :   
+  send(client_fd, header, strlen(header), 0);
+  send(client_fd, body, body_length, 0);
+  
+
+
+
+
+
+
+
+
