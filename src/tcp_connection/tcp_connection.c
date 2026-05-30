@@ -10,7 +10,7 @@
 #define PORT 6969
 #define BUFFER_SIZE 4096
 
-int parse_request_line(const char *buffer, char *path, char *method) {
+int parse_request_line(const char *buffer, char *method, char *path) {
   return sscanf(buffer, "%15s %255s", method, path) == 2;
 }
 // send response
@@ -20,7 +20,7 @@ void send_response(int client_fd, int status_code, const char *status_text,
   int body_len = strlen(body);
   // http requires \r\n line ending and an empty line between headers and body
   snprintf(header, sizeof(header),
-           "HTTP 1.1 %d %s\r\n"
+           "HTTP/1.1 %d %s\r\n"
            "Content-Type : %s\r\n"
            "Content-Length : %d\r\n"
            "Connection : close\r\n"
@@ -53,7 +53,7 @@ void handle_client_connection(int client_fd) {
   };
   printf("Method : %s  | Path : %s\n", method, path);
   if (strcmp(method, "GET") != 0) {
-    send_response(client_fd, 405, "Method not allowed", "text/palin",
+    send_response(client_fd, 405, "Method not allowed", "text/plain",
                   "405 Method not allowed");
     return;
   }
@@ -77,7 +77,7 @@ void handle_client_connection(int client_fd) {
         "  <p>Running on port 6969</p>\n"
         "</body>\n"
         "</html>";
-    send_response(client_fd, 200, "OK", "text/plain", body);
+    send_response(client_fd, 200, "OK", "text/html", body);
   } else if (strcmp(path, "/hello") == 0) {
     const char *body =
         "<!DOCTYPE html>\n"
@@ -133,7 +133,7 @@ void tcp_connection() {
   memset(&server_addr, 0, sizeof(server_addr));
   server_addr.sin_family = AF_INET;
   server_addr.sin_port = htons(PORT);
-  server_addr.sin_addr.s_addr = INADDR_ANY;
+  // server_addr.sin_addr.s_addr = INADDR_ANY;
   if (inet_pton(AF_INET, "127.0.0.1", &server_addr.sin_addr) <= 0) {
     perror("invalid address\n");
     close(server_fd);
