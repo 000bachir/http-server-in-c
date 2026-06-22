@@ -173,22 +173,6 @@ void tcp_connection() {
     printf("client connected %s\n", client_ip);
     handle_client_connection(client_fd);
     close(client_fd);
-
-    // now i receive data
-    // memset(buffer, 0, BUFFER_SIZE);
-    // ssize_t bytes_received = recv(client_fd, buffer, BUFFER_SIZE - 1, 0);
-    // if (bytes_received > 0) {
-    //   printf("received %s\n", buffer);
-    //
-    //   const char *message = "message received by the server";
-    //   if (send(client_fd, message, strlen(message), 0) < 0) {
-    //     perror("send failed\n");
-    //   }
-    // } else if (bytes_received == 0) {
-    //   perror("client disconnected");
-    // } else {
-    //   perror("recv failed");
-    // };
   }
   close(server_fd);
 }
